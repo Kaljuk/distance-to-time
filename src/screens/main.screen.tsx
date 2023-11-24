@@ -31,6 +31,11 @@ const MainScreen = () => {
 		label: dayjs().month(index).format("MMMM")
 	})), [])
 
+	const dateOptions = useMemo(() => Array(date?.daysInMonth?.() ?? 30).fill(1).map((_, index) => ({
+		value: index + 1,
+		label: String(index + 1)
+	})), [date])
+
 	const distanceTraveledKm = useMemo(() => calculateEarthTravelDistance({
 		startDate: currentTime,
 		endDate: date,
@@ -55,18 +60,21 @@ const MainScreen = () => {
 						{/* Day */}
 						<div className="flex flex-col w-full">
 							<span className="text-white font-semibold">
-								Day
+								Date
 							</span>
-							<input
-								type="number"
-								min={1}
-								max={date?.daysInMonth?.() ?? 30}
+							<select
 								className="w-full h-12 bg-gray-700 text-white border border-white rounded-md"
-								value={date?.date() ?? 1}
+								value={date?.day() ?? 1}
 								onChange={(event) => {
 									handleDateChange(Number(event.target.value), "date");
 								}}
-							/>
+							>
+								{dateOptions.map((date) => (
+									<option key={['selectable-date', date.value].join('-')} value={date.value}>
+										{date.label}
+									</option>
+								))}
+							</select>
 						</div>
 						{/* Month */}
 						<div className="flex flex-col w-full">
@@ -141,7 +149,7 @@ const Countdown: FC<CountdownProps> = ({ targetNumber }) => {
 	}, [targetNumber]);
 
 	return (
-		<div className="flex items-center justify-center h-16 text-3xl border border-gray-700 shadow-outline shadow-green-400">
+		<div className="flex items-center justify-center h-16 text-3xl border border-gray-700/50 backdrop-blur-lg">
 			{currentNumber.toFixed(4).split('').map((oneDigit) => (
 				<span className={oneDigit === '.' ? '' : "w-7 flex items-center justify-center"}>
 					{oneDigit}
