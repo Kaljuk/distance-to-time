@@ -64,10 +64,8 @@ const MainScreen = () => {
 							</span>
 							<select
 								className="w-full h-12 bg-gray-700 text-white border border-white rounded-md"
-								value={date?.day() ?? 1}
-								onChange={(event) => {
-									handleDateChange(Number(event.target.value), "date");
-								}}
+								value={date?.date() ?? 1}
+								onChange={(event) => handleDateChange(Number(event.target.value), "date")}
 							>
 								{dateOptions.map((date) => (
 									<option key={['selectable-date', date.value].join('-')} value={date.value}>
@@ -84,9 +82,7 @@ const MainScreen = () => {
 							<select
 								className="w-full h-12 bg-gray-700 text-white border border-white rounded-md"
 								value={date?.month() ?? 0}
-								onChange={(event) => {
-									handleDateChange(Number(event.target.value), "month");
-								}}
+								onChange={(event) => handleDateChange(Number(event.target.value), "month")}
 							>
 								{monthOptions.map((month) => (
 									<option key={['selectable-month', month.value].join('-')} value={month.value}>
@@ -150,8 +146,8 @@ const Countdown: FC<CountdownProps> = ({ targetNumber }) => {
 
 	return (
 		<div className="flex items-center justify-center h-16 text-3xl border border-gray-700/50 backdrop-blur-lg">
-			{currentNumber.toFixed(4).split('').map((oneDigit) => (
-				<span className={oneDigit === '.' ? '' : "w-7 flex items-center justify-center"}>
+			{currentNumber.toFixed(4).split('').map((oneDigit, index) => (
+				<span className={oneDigit === '.' ? '' : "w-7 flex items-center justify-center"} key={['countdown-digit', index, oneDigit].join('-')}>
 					{oneDigit}
 				</span>
 			))}
